@@ -98,21 +98,23 @@
           "label": "Add-ons",
           "type": "multi",
           "required": false,
+          "freeAllowance": 1,
+          "extraCharge": 0.3,
           "options": [
             {
               "id": "brown-sugar",
               "label": "Brown sugar",
-              "priceDelta": 0
+              "priceDelta": null
             },
             {
               "id": "sugar",
               "label": "Sugar",
-              "priceDelta": 0
+              "priceDelta": null
             },
             {
               "id": "vanilla",
               "label": "Vanilla",
-              "priceDelta": 0
+              "priceDelta": null
             }
           ]
         }
@@ -147,21 +149,23 @@
           "label": "Add-ons",
           "type": "multi",
           "required": false,
+          "freeAllowance": 1,
+          "extraCharge": 0.3,
           "options": [
             {
               "id": "brown-sugar",
               "label": "Brown sugar",
-              "priceDelta": 0
+              "priceDelta": null
             },
             {
               "id": "sugar",
               "label": "Sugar",
-              "priceDelta": 0
+              "priceDelta": null
             },
             {
               "id": "vanilla",
               "label": "Vanilla",
-              "priceDelta": 0
+              "priceDelta": null
             },
             {
               "id": "maple-cold-foam",

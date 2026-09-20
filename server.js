@@ -53,9 +53,15 @@ function resolveOrderLine(menuItem, line) {
       return opt;
     });
 
-    chosen.forEach((opt) => {
-      unitPrice += opt.priceDelta;
-    });
+    // Options with a fixed priceDelta always cost that. Options with priceDelta: null
+    // draw from the group's shared free allowance (e.g. "first one free, then $0.30 each").
+    const fixedChosen = chosen.filter((o) => o.priceDelta !== null);
+    const poolChosen = chosen.filter((o) => o.priceDelta === null);
+    const fixedSum = fixedChosen.reduce((sum, o) => sum + o.priceDelta, 0);
+    const freeAllowance = group.freeAllowance || 0;
+    const extraCharge = group.extraCharge || 0;
+    const billablePoolCount = Math.max(0, poolChosen.length - freeAllowance);
+    unitPrice += fixedSum + billablePoolCount * extraCharge;
 
     if (chosen.length > 0) {
       modifiers.push({

@@ -76,10 +76,14 @@ function priceForDraft(item) {
   (item.modifierGroups || []).forEach((group) => {
     const val = selections[group.id];
     const ids = group.type === 'single' ? (val ? [val] : []) : val || [];
-    ids.forEach((id) => {
-      const opt = group.options.find((o) => o.id === id);
-      if (opt) unitPrice += opt.priceDelta;
-    });
+    const chosen = ids.map((id) => group.options.find((o) => o.id === id)).filter(Boolean);
+
+    // Fixed-price options (e.g. Maple cold foam) always cost their listed price.
+    // Pool options (priceDelta: null) share the group's free allowance, then cost extraCharge each.
+    const fixedSum = chosen.filter((o) => o.priceDelta !== null).reduce((sum, o) => sum + o.priceDelta, 0);
+    const poolCount = chosen.filter((o) => o.priceDelta === null).length;
+    const billablePoolCount = Math.max(0, poolCount - (group.freeAllowance || 0));
+    unitPrice += fixedSum + billablePoolCount * (group.extraCharge || 0);
   });
   return unitPrice;
 }
@@ -124,7 +128,11 @@ function renderMenuItemCard(item) {
     groupEl.className = 'modifier-group';
     const groupLabel = document.createElement('div');
     groupLabel.className = 'modifier-label';
-    groupLabel.textContent = group.label + (group.required ? '' : ' (optional)');
+    let labelText = group.label + (group.required ? '' : ' (optional)');
+    if (group.freeAllowance) {
+      labelText += ` — first ${group.freeAllowance} free, +${money(group.extraCharge || 0)} each after`;
+    }
+    groupLabel.textContent = labelText;
     groupEl.appendChild(groupLabel);
 
     const options = document.createElement('div');
