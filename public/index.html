@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Skyler's Coffee — Order Pickup</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="top">
+  <div class="brand-mark">
+    <img src="img/logo-banner.jpg" alt="Skyler's Coffee" class="brand-logo" />
+    <div>
+      <h1 id="bizName" class="sr-only">Loading…</h1>
+      <p id="bizTagline">Place your order and pick a pickup time.</p>
+    </div>
+  </div>
+  <button type="button" class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+</header>
+<nav class="tabs">
+  <a href="/" class="active">Order</a>
+  <a href="/admin.html">Owner Dashboard</a>
+</nav>
+
+<main id="orderView">
+  <div id="errorBanner" class="error-banner" style="display:none"></div>
+
+  <div class="card">
+    <h2>1. Choose items</h2>
+    <div id="menuGrid" class="menu-grid"></div>
+  </div>
+
+  <div class="card">
+    <h2>2. Pick a pickup time</h2>
+    <div id="dayToggle" class="day-toggle"></div>
+    <div id="slotGrid" class="slot-grid"></div>
+    <div id="slotEmpty" class="slot-empty" style="display:none">We're closed that day — try the other option above.</div>
+  </div>
+
+  <div class="card">
+    <h2>3. Your details</h2>
+    <label for="customerName">Name</label>
+    <input type="text" id="customerName" placeholder="Jane Smith" />
+    <label for="phone">Phone number</label>
+    <input type="tel" id="phone" placeholder="(555) 123-4567" />
+    <label for="notes">Notes (optional)</label>
+    <textarea id="notes" placeholder="Anything we should know?"></textarea>
+  </div>
+
+  <div class="card">
+    <h2>Order summary</h2>
+    <div id="summaryRows"></div>
+    <div class="summary-total">
+      <span>Total</span>
+      <span id="summaryTotal">$0.00</span>
+    </div>
+    <button class="primary" id="submitBtn">Place order</button>
+  </div>
+</main>
+
+<main id="successView" style="display:none">
+  <div class="card success-screen">
+    <div class="check">✓</div>
+    <h2>Order received!</h2>
+    <p id="successDetails"></p>
+    <div class="order-id" id="successOrderId"></div>
+    <button class="primary" id="newOrderBtn">Place another order</button>
+  </div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

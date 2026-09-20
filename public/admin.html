@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Skyler's Coffee — Dashboard</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="top">
+  <div class="brand-mark">
+    <img src="img/logo-banner.jpg" alt="Skyler's Coffee" class="brand-logo" />
+    <div>
+      <h1 id="bizName" class="sr-only">Loading…</h1>
+      <p>Owner dashboard — manage incoming orders and pickup schedule.</p>
+    </div>
+  </div>
+  <button type="button" class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+</header>
+<nav class="tabs">
+  <a href="/">Order</a>
+  <a href="/admin.html" class="active">Owner Dashboard</a>
+</nav>
+
+<main>
+  <div class="stats-row" id="statsRow"></div>
+
+  <div class="card">
+    <div class="filters">
+      <div class="field">
+        <label for="filterDate">Pickup date</label>
+        <input type="date" id="filterDate" />
+      </div>
+      <div class="field">
+        <label for="filterStatus">Status</label>
+        <select id="filterStatus">
+          <option value="">All (except cancelled)</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="ready">Ready</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="field" style="flex:0">
+        <button class="primary" style="margin-top:0" id="clearDateBtn">All dates</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="ordersList"></div>
+</main>
+
+<script src="admin.js"></script>
+</body>
+</html>

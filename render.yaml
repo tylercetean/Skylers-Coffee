@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: skylers-coffee
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: NODE_VERSION
+        value: 20

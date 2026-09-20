@@ -1,0 +1,177 @@
+{
+  "settings": {
+    "businessName": "Skyler's Coffee",
+    "tagline": "Order online, pick your pickup time.",
+    "slotIntervalMinutes": 15,
+    "maxOrdersPerSlot": 4,
+    "weeklyHours": {
+      "0": [
+        {
+          "open": "08:00",
+          "close": "15:00"
+        }
+      ],
+      "1": [
+        {
+          "open": "08:00",
+          "close": "10:45"
+        },
+        {
+          "open": "14:00",
+          "close": "15:00"
+        }
+      ],
+      "2": [],
+      "3": [
+        {
+          "open": "08:00",
+          "close": "10:45"
+        }
+      ],
+      "4": [],
+      "5": [
+        {
+          "open": "08:00",
+          "close": "10:45"
+        },
+        {
+          "open": "13:00",
+          "close": "15:00"
+        }
+      ],
+      "6": []
+    }
+  },
+  "menu": [
+    {
+      "id": "flat-white",
+      "name": "Flat White",
+      "price": 5,
+      "category": "Espresso",
+      "modifierGroups": [
+        {
+          "id": "milk",
+          "label": "Milk",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "whole",
+              "label": "Whole milk",
+              "priceDelta": 0
+            },
+            {
+              "id": "oat",
+              "label": "Oat milk",
+              "priceDelta": 0.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hot-latte",
+      "name": "Hot Latte",
+      "price": 5.5,
+      "category": "Espresso",
+      "modifierGroups": [
+        {
+          "id": "milk",
+          "label": "Milk",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "whole",
+              "label": "Whole milk",
+              "priceDelta": 0
+            },
+            {
+              "id": "oat",
+              "label": "Oat milk",
+              "priceDelta": 0.5
+            }
+          ]
+        },
+        {
+          "id": "addons",
+          "label": "Add-ons",
+          "type": "multi",
+          "required": false,
+          "options": [
+            {
+              "id": "brown-sugar",
+              "label": "Brown sugar",
+              "priceDelta": 0
+            },
+            {
+              "id": "sugar",
+              "label": "Sugar",
+              "priceDelta": 0
+            },
+            {
+              "id": "vanilla",
+              "label": "Vanilla",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iced-latte",
+      "name": "Iced Latte",
+      "price": 6,
+      "category": "Cold",
+      "modifierGroups": [
+        {
+          "id": "milk",
+          "label": "Milk",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "whole",
+              "label": "Whole milk",
+              "priceDelta": 0
+            },
+            {
+              "id": "oat",
+              "label": "Oat milk",
+              "priceDelta": 0.5
+            }
+          ]
+        },
+        {
+          "id": "addons",
+          "label": "Add-ons",
+          "type": "multi",
+          "required": false,
+          "options": [
+            {
+              "id": "brown-sugar",
+              "label": "Brown sugar",
+              "priceDelta": 0
+            },
+            {
+              "id": "sugar",
+              "label": "Sugar",
+              "priceDelta": 0
+            },
+            {
+              "id": "vanilla",
+              "label": "Vanilla",
+              "priceDelta": 0
+            },
+            {
+              "id": "maple-cold-foam",
+              "label": "Maple cold foam",
+              "priceDelta": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "orders": []
+}
