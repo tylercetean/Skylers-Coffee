@@ -44,6 +44,62 @@
   },
   "menu": [
     {
+      "id": "iced-latte",
+      "name": "Iced Latte",
+      "price": 6,
+      "category": "Cold",
+      "modifierGroups": [
+        {
+          "id": "milk",
+          "label": "Milk",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "whole",
+              "label": "Whole milk",
+              "priceDelta": 0
+            },
+            {
+              "id": "oat",
+              "label": "Oat milk",
+              "priceDelta": 0.5
+            }
+          ]
+        },
+        {
+          "id": "addons",
+          "label": "Add-ons",
+          "type": "multi",
+          "required": false,
+          "freeAllowance": 1,
+          "extraCharge": 0.3,
+          "options": [
+            {
+              "id": "brown-sugar",
+              "label": "Brown sugar",
+              "priceDelta": null
+            },
+            {
+              "id": "sugar",
+              "label": "Sugar",
+              "priceDelta": null
+            },
+            {
+              "id": "vanilla",
+              "label": "Vanilla",
+              "priceDelta": null
+            },
+            {
+              "id": "maple-cold-foam",
+              "label": "Maple cold foam",
+              "priceDelta": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "flat-white",
       "name": "Flat White",
       "price": 5,
@@ -115,62 +171,6 @@
               "id": "vanilla",
               "label": "Vanilla",
               "priceDelta": null
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "iced-latte",
-      "name": "Iced Latte",
-      "price": 6,
-      "category": "Cold",
-      "modifierGroups": [
-        {
-          "id": "milk",
-          "label": "Milk",
-          "type": "single",
-          "required": true,
-          "options": [
-            {
-              "id": "whole",
-              "label": "Whole milk",
-              "priceDelta": 0
-            },
-            {
-              "id": "oat",
-              "label": "Oat milk",
-              "priceDelta": 0.5
-            }
-          ]
-        },
-        {
-          "id": "addons",
-          "label": "Add-ons",
-          "type": "multi",
-          "required": false,
-          "freeAllowance": 1,
-          "extraCharge": 0.3,
-          "options": [
-            {
-              "id": "brown-sugar",
-              "label": "Brown sugar",
-              "priceDelta": null
-            },
-            {
-              "id": "sugar",
-              "label": "Sugar",
-              "priceDelta": null
-            },
-            {
-              "id": "vanilla",
-              "label": "Vanilla",
-              "priceDelta": null
-            },
-            {
-              "id": "maple-cold-foam",
-              "label": "Maple cold foam",
-              "priceDelta": 0.9
             }
           ]
         }
