@@ -190,6 +190,75 @@ async function toggleStoreStatus() {
   }
 }
 
+function renderStockList(menu) {
+  const container = el('stockList');
+  container.innerHTML = '';
+
+  menu.forEach((item) => {
+    const itemEl = document.createElement('div');
+    itemEl.className = 'stock-item';
+
+    const header = document.createElement('div');
+    header.className = 'stock-item-header';
+    header.innerHTML = `<span class="stock-item-name">${item.name}</span>`;
+    header.appendChild(makeStockToggleBtn(item.inStock !== false, async (btn) => {
+      btn.disabled = true;
+      try {
+        const updated = await api(`/api/menu/${item.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ inStock: !(item.inStock !== false) }),
+        });
+        item.inStock = updated.inStock;
+        renderStockList(menu);
+      } catch (err) {
+        alert(err.message);
+        btn.disabled = false;
+      }
+    }));
+    itemEl.appendChild(header);
+
+    (item.modifierGroups || []).forEach((group) => {
+      const groupEl = document.createElement('div');
+      groupEl.className = 'stock-option-group';
+      groupEl.innerHTML = `<div class="stock-option-group-label">${group.label}</div>`;
+
+      group.options.forEach((opt) => {
+        const row = document.createElement('div');
+        row.className = 'stock-option-row';
+        row.innerHTML = `<span>${opt.label}</span>`;
+        row.appendChild(makeStockToggleBtn(opt.inStock !== false, async (btn) => {
+          btn.disabled = true;
+          try {
+            const updated = await api(`/api/menu/${item.id}/options/${group.id}/${opt.id}`, {
+              method: 'PATCH',
+              body: JSON.stringify({ inStock: !(opt.inStock !== false) }),
+            });
+            opt.inStock = updated.inStock;
+            renderStockList(menu);
+          } catch (err) {
+            alert(err.message);
+            btn.disabled = false;
+          }
+        }));
+        groupEl.appendChild(row);
+      });
+
+      itemEl.appendChild(groupEl);
+    });
+
+    container.appendChild(itemEl);
+  });
+}
+
+function makeStockToggleBtn(inStock, onClick) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'stock-toggle-btn' + (inStock ? '' : ' is-out');
+  btn.textContent = inStock ? 'In stock' : 'Out of stock';
+  btn.addEventListener('click', () => onClick(btn));
+  return btn;
+}
+
 async function init() {
   try {
     applyTheme();
@@ -198,10 +267,11 @@ async function init() {
     // localStorage may be unavailable; theme toggle is a non-essential convenience
   }
 
-  const settings = await api('/api/settings');
+  const [settings, menu] = await Promise.all([api('/api/settings'), api('/api/menu')]);
   el('bizName').textContent = settings.businessName + ' — Dashboard';
   renderStoreStatus(settings.storeOpen !== false);
   el('storeStatusToggle').addEventListener('click', toggleStoreStatus);
+  renderStockList(menu);
 
   el('filterDate').addEventListener('change', loadOrders);
   el('filterStatus').addEventListener('change', loadOrders);

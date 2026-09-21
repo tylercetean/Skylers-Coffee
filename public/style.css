@@ -210,6 +210,76 @@ main {
   margin: 0 0 14px;
 }
 
+.stock-card summary {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.12rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.stock-card summary::-webkit-details-marker { display: none; }
+.stock-card summary::after {
+  content: '▾';
+  float: right;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.stock-card[open] summary::after { content: '▴'; }
+.stock-card summary:hover { color: var(--accent-dark); }
+.stock-card #stockList { margin-top: 16px; }
+
+.stock-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  background: var(--bg-soft);
+}
+.stock-item:last-child { margin-bottom: 0; }
+
+.stock-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.stock-item-name { font-weight: 700; font-size: 0.92rem; }
+
+.stock-toggle-btn {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--success);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.stock-toggle-btn.is-out {
+  color: var(--danger);
+}
+.stock-toggle-btn:hover { border-color: var(--accent); }
+.stock-toggle-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.stock-option-group { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.stock-option-group-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.stock-option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 0.85rem;
+}
+
 label {
   display: block;
   font-size: 0.82rem;
@@ -278,6 +348,23 @@ textarea { resize: vertical; min-height: 60px; }
 .menu-item .name { font-weight: 600; font-size: 0.96rem; }
 .menu-item .price { color: var(--muted); font-size: 0.8rem; margin-top: 1px; }
 
+.menu-item.out-of-stock { opacity: 0.6; }
+.menu-item.out-of-stock .modifier-group { opacity: 0.7; }
+
+.stock-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+}
+
 .modifier-group { margin-top: 12px; }
 .modifier-label {
   font-size: 0.74rem;
@@ -311,6 +398,13 @@ textarea { resize: vertical; min-height: 60px; }
   color: var(--on-accent);
   font-weight: 600;
 }
+.modifier-pill:disabled,
+.modifier-pill.unavailable {
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+.modifier-pill:disabled:hover { border-color: var(--border); }
 
 .menu-item-footer {
   display: flex;
@@ -333,12 +427,14 @@ textarea { resize: vertical; min-height: 60px; }
   cursor: pointer;
 }
 .add-btn:hover { background: var(--accent-dark); }
+.add-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--muted); }
 
 .qty-control {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+.qty-control button:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .qty-control button {
   width: 30px;

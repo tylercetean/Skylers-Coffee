@@ -49,6 +49,7 @@
       "name": "Iced Latte",
       "price": 6,
       "category": "Cold",
+      "inStock": true,
       "modifierGroups": [
         {
           "id": "milk",
@@ -59,12 +60,14 @@
             {
               "id": "whole",
               "label": "Whole milk",
-              "priceDelta": 0
+              "priceDelta": 0,
+              "inStock": true
             },
             {
               "id": "oat",
               "label": "Oat milk",
-              "priceDelta": 0.5
+              "priceDelta": 0.5,
+              "inStock": true
             }
           ]
         },
@@ -79,22 +82,26 @@
             {
               "id": "brown-sugar",
               "label": "Brown sugar",
-              "priceDelta": null
+              "priceDelta": null,
+              "inStock": true
             },
             {
               "id": "sugar",
               "label": "Sugar",
-              "priceDelta": null
+              "priceDelta": null,
+              "inStock": true
             },
             {
               "id": "vanilla",
               "label": "Vanilla",
-              "priceDelta": null
+              "priceDelta": null,
+              "inStock": true
             },
             {
               "id": "maple-cold-foam",
               "label": "Maple cold foam",
-              "priceDelta": 0.9
+              "priceDelta": 0.9,
+              "inStock": true
             }
           ]
         }
@@ -105,6 +112,7 @@
       "name": "Flat White",
       "price": 5,
       "category": "Espresso",
+      "inStock": true,
       "modifierGroups": [
         {
           "id": "milk",
@@ -115,12 +123,14 @@
             {
               "id": "whole",
               "label": "Whole milk",
-              "priceDelta": 0
+              "priceDelta": 0,
+              "inStock": true
             },
             {
               "id": "oat",
               "label": "Oat milk",
-              "priceDelta": 0.5
+              "priceDelta": 0.5,
+              "inStock": true
             }
           ]
         }
@@ -131,6 +141,7 @@
       "name": "Hot Latte",
       "price": 5.5,
       "category": "Espresso",
+      "inStock": true,
       "modifierGroups": [
         {
           "id": "milk",
@@ -141,12 +152,14 @@
             {
               "id": "whole",
               "label": "Whole milk",
-              "priceDelta": 0
+              "priceDelta": 0,
+              "inStock": true
             },
             {
               "id": "oat",
               "label": "Oat milk",
-              "priceDelta": 0.5
+              "priceDelta": 0.5,
+              "inStock": true
             }
           ]
         },
@@ -161,17 +174,20 @@
             {
               "id": "brown-sugar",
               "label": "Brown sugar",
-              "priceDelta": null
+              "priceDelta": null,
+              "inStock": true
             },
             {
               "id": "sugar",
               "label": "Sugar",
-              "priceDelta": null
+              "priceDelta": null,
+              "inStock": true
             },
             {
               "id": "vanilla",
               "label": "Vanilla",
-              "priceDelta": null
+              "priceDelta": null,
+              "inStock": true
             }
           ]
         }

@@ -60,7 +60,7 @@ function initDraft(item) {
   const selections = {};
   (item.modifierGroups || []).forEach((group) => {
     if (group.type === 'single') {
-      const def = group.options[0];
+      const def = group.options.find((o) => o.inStock !== false) || group.options[0];
       selections[group.id] = def ? def.id : null;
     } else {
       selections[group.id] = [];
@@ -109,15 +109,16 @@ function renderMenuItemCard(item) {
   if (!(item.id in state.draftSelections)) initDraft(item);
   const selections = state.draftSelections[item.id];
   const qty = state.draftQty[item.id];
+  const itemOutOfStock = item.inStock === false;
 
   const card = document.createElement('div');
-  card.className = 'menu-item';
+  card.className = 'menu-item' + (itemOutOfStock ? ' out-of-stock' : '');
 
   const header = document.createElement('div');
   header.className = 'menu-item-header';
   header.innerHTML = `
     <div class="info">
-      <div class="name">${item.name}</div>
+      <div class="name">${item.name}${itemOutOfStock ? ' <span class="stock-badge">Out of stock</span>' : ''}</div>
       <div class="price">${item.price > 0 ? money(item.price) + ' base' : 'Price TBD'}</div>
     </div>
   `;
@@ -143,11 +144,17 @@ function renderMenuItemCard(item) {
       const isSelected = isMulti
         ? (selections[group.id] || []).includes(opt.id)
         : selections[group.id] === opt.id;
+      const optOutOfStock = opt.inStock === false;
 
       const pill = document.createElement('button');
       pill.type = 'button';
-      pill.className = 'modifier-pill' + (isSelected ? ' selected' : '');
-      pill.textContent = opt.priceDelta > 0 ? `${opt.label} (+${money(opt.priceDelta)})` : opt.label;
+      pill.className = 'modifier-pill' + (isSelected ? ' selected' : '') + (optOutOfStock ? ' unavailable' : '');
+      pill.disabled = optOutOfStock || itemOutOfStock;
+      pill.textContent = optOutOfStock
+        ? `${opt.label} (out of stock)`
+        : opt.priceDelta > 0
+        ? `${opt.label} (+${money(opt.priceDelta)})`
+        : opt.label;
       pill.addEventListener('click', () => {
         if (isMulti) {
           const cur = new Set(selections[group.id] || []);
@@ -170,11 +177,13 @@ function renderMenuItemCard(item) {
   footer.className = 'menu-item-footer';
   footer.innerHTML = `
     <div class="qty-control">
-      <button type="button" data-action="dec">−</button>
+      <button type="button" data-action="dec" ${itemOutOfStock ? 'disabled' : ''}>−</button>
       <span>${qty}</span>
-      <button type="button" data-action="inc">+</button>
+      <button type="button" data-action="inc" ${itemOutOfStock ? 'disabled' : ''}>+</button>
     </div>
-    <button type="button" class="add-btn">Add · ${money(priceForDraft(item) * qty)}</button>
+    <button type="button" class="add-btn" ${itemOutOfStock ? 'disabled' : ''}>${
+    itemOutOfStock ? 'Out of stock' : `Add · ${money(priceForDraft(item) * qty)}`
+  }</button>
   `;
   footer.querySelector('[data-action="dec"]').addEventListener('click', () => {
     state.draftQty[item.id] = Math.max(1, qty - 1);

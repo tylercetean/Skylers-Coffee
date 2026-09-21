@@ -30,6 +30,10 @@ function round2(n) {
 // Validates one cart line against its menu item's modifier groups and
 // computes its priced-out form. Throws a user-facing Error on bad input.
 function resolveOrderLine(menuItem, line) {
+  if (menuItem.inStock === false) {
+    throw new Error(`${menuItem.name} is currently out of stock.`);
+  }
+
   const qty = Math.max(1, Number(line.qty) || 1);
   const selections = line.selections || {};
   let unitPrice = menuItem.price;
@@ -50,6 +54,7 @@ function resolveOrderLine(menuItem, line) {
     const chosen = selectedIds.map((id) => {
       const opt = optionById[id];
       if (!opt) throw new Error(`Invalid ${group.label.toLowerCase()} option for ${menuItem.name}.`);
+      if (opt.inStock === false) throw new Error(`${opt.label} is currently out of stock.`);
       return opt;
     });
 
@@ -113,6 +118,36 @@ function generateSlotsForDate(dateStr, settings) {
 app.get('/api/menu', (req, res) => {
   const data = db.read();
   res.json(data.menu);
+});
+
+// Toggle an entire menu item's stock (e.g. sold out of a drink for the day)
+app.patch('/api/menu/:itemId', (req, res) => {
+  const data = db.read();
+  const item = data.menu.find((m) => m.id === req.params.itemId);
+  if (!item) return res.status(404).json({ error: 'Menu item not found' });
+  if (typeof req.body.inStock !== 'boolean') {
+    return res.status(400).json({ error: 'inStock (boolean) is required' });
+  }
+  item.inStock = req.body.inStock;
+  db.write(data);
+  res.json(item);
+});
+
+// Toggle stock on one modifier option (e.g. out of vanilla syrup, out of oat milk)
+app.patch('/api/menu/:itemId/options/:groupId/:optionId', (req, res) => {
+  const data = db.read();
+  const item = data.menu.find((m) => m.id === req.params.itemId);
+  if (!item) return res.status(404).json({ error: 'Menu item not found' });
+  const group = (item.modifierGroups || []).find((g) => g.id === req.params.groupId);
+  if (!group) return res.status(404).json({ error: 'Modifier group not found' });
+  const option = group.options.find((o) => o.id === req.params.optionId);
+  if (!option) return res.status(404).json({ error: 'Option not found' });
+  if (typeof req.body.inStock !== 'boolean') {
+    return res.status(400).json({ error: 'inStock (boolean) is required' });
+  }
+  option.inStock = req.body.inStock;
+  db.write(data);
+  res.json(option);
 });
 
 // ---- Settings ----
