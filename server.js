@@ -7,7 +7,7 @@ const stripe = process.env.STRIPE_SECRET_KEY ? require('stripe')(process.env.STR
 
 const app = express();
 const PORT = process.env.PORT || 3210;
-const PREP_BUFFER_MINUTES = 60; // orders must be placed at least this far ahead of pickup
+const PREP_BUFFER_MINUTES = 30; // orders must be placed at least this far ahead of pickup
 const BUSINESS_TIMEZONE = 'America/Detroit'; // pickup hours are defined in this local time, regardless of server timezone
 
 app.use(express.json());
