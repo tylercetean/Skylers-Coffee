@@ -8,9 +8,39 @@ const stripe = process.env.STRIPE_SECRET_KEY ? require('stripe')(process.env.STR
 const app = express();
 const PORT = process.env.PORT || 3210;
 const PREP_BUFFER_MINUTES = 60; // orders must be placed at least this far ahead of pickup
+const BUSINESS_TIMEZONE = 'America/Detroit'; // pickup hours are defined in this local time, regardless of server timezone
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Cloud hosts (like Render) usually run their clock in UTC, but our pickup hours
+// are Eastern time. Reading `new Date()` directly on the server would silently
+// drift by hours depending on where it's deployed, so always resolve "now" through
+// this business timezone instead of trusting the server's own local time.
+function getBusinessNow() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: BUSINESS_TIMEZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(new Date());
+
+  const map = {};
+  parts.forEach((p) => {
+    if (p.type !== 'literal') map[p.type] = p.value;
+  });
+
+  let hour = parseInt(map.hour, 10);
+  if (hour === 24) hour = 0; // some locales report midnight as "24"
+
+  return {
+    dateStr: `${map.year}-${map.month}-${map.day}`,
+    minutesSinceMidnight: hour * 60 + parseInt(map.minute, 10),
+  };
+}
 
 function timeToMinutes(t) {
   const [h, m] = t.split(':').map(Number);
@@ -96,11 +126,9 @@ function generateSlotsForDate(dateStr, settings) {
   const windows = (settings.weeklyHours && settings.weeklyHours[weekday]) || [];
   const interval = settings.slotIntervalMinutes;
 
-  const now = new Date();
-  const isToday = dateStr === now.toISOString().slice(0, 10);
-  const earliestAllowed = isToday
-    ? now.getHours() * 60 + now.getMinutes() + PREP_BUFFER_MINUTES
-    : -Infinity;
+  const businessNow = getBusinessNow();
+  const isToday = dateStr === businessNow.dateStr;
+  const earliestAllowed = isToday ? businessNow.minutesSinceMidnight + PREP_BUFFER_MINUTES : -Infinity;
 
   const slots = [];
   windows.forEach((window) => {
