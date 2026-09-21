@@ -84,6 +84,8 @@ function resolveOrderLine(menuItem, line) {
 }
 
 function generateSlotsForDate(dateStr, settings) {
+  if (settings.storeOpen === false) return [];
+
   const date = new Date(dateStr + 'T00:00:00');
   const weekday = date.getDay();
   const windows = (settings.weeklyHours && settings.weeklyHours[weekday]) || [];
@@ -177,6 +179,10 @@ app.post('/api/orders', (req, res) => {
   }
 
   const data = db.read();
+
+  if (data.settings.storeOpen === false) {
+    return res.status(400).json({ error: "We're not accepting orders right now. Check back soon!" });
+  }
 
   // Validate the slot is still open
   const availableSlots = generateSlotsForDate(pickupDate, data.settings);

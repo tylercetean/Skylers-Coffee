@@ -161,6 +161,35 @@ function toggleTheme() {
   updateThemeToggleIcon();
 }
 
+function renderStoreStatus(storeOpen) {
+  const card = el('storeStatusCard');
+  const value = el('storeStatusValue');
+  const btn = el('storeStatusToggle');
+
+  card.classList.toggle('is-closed', !storeOpen);
+  value.textContent = storeOpen ? 'Open — taking orders' : 'Closed — not taking orders';
+  btn.textContent = storeOpen ? 'Close ordering' : 'Reopen ordering';
+}
+
+async function toggleStoreStatus() {
+  const btn = el('storeStatusToggle');
+  const isCurrentlyOpen = !el('storeStatusCard').classList.contains('is-closed');
+  const next = !isCurrentlyOpen; // target state after toggling
+
+  btn.disabled = true;
+  try {
+    const settings = await api('/api/settings', {
+      method: 'PUT',
+      body: JSON.stringify({ storeOpen: next }),
+    });
+    renderStoreStatus(settings.storeOpen);
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 async function init() {
   try {
     applyTheme();
@@ -171,6 +200,8 @@ async function init() {
 
   const settings = await api('/api/settings');
   el('bizName').textContent = settings.businessName + ' — Dashboard';
+  renderStoreStatus(settings.storeOpen !== false);
+  el('storeStatusToggle').addEventListener('click', toggleStoreStatus);
 
   el('filterDate').addEventListener('change', loadOrders);
   el('filterStatus').addEventListener('change', loadOrders);

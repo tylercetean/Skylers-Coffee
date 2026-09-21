@@ -2,6 +2,7 @@
   "settings": {
     "businessName": "Skyler's Coffee",
     "tagline": "Order online, pick your pickup time.",
+    "storeOpen": true,
     "slotIntervalMinutes": 15,
     "maxOrdersPerSlot": 2,
     "weeklyHours": {

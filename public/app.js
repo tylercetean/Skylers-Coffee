@@ -383,6 +383,13 @@ async function init() {
   state.settings = settings;
   el('bizName').textContent = settings.businessName;
   el('bizTagline').textContent = settings.tagline || 'Place your order and pick a pickup time.';
+
+  if (settings.storeOpen === false) {
+    el('orderView').style.display = 'none';
+    el('closedView').style.display = 'block';
+    return;
+  }
+
   renderMenu();
   renderSummary();
 
